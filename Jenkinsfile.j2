@@ -21,8 +21,8 @@ pipeline {
                       def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
                       currentBuild.displayName = buildDisplayName
                       env.ENV_BUILDNAME=buildDisplayName
-                      env.dpeClFoTag=sh script: "\$(git describe)", returnStdout: true
-                      env.dpeClFoBuildDate=sh script: "\$(TZ='EST5EDT,M3.2.0,M11.1.0' date)", returnStdout: true
+                      env.dpeClFoTag=sh script: "echo \$(git describe)", returnStdout: true
+                      env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date)", returnStdout: true
                    }
                  }
            }
@@ -34,7 +34,7 @@ pipeline {
 
                     dpeBuildTag=$ENV_BUILDNAME
                     echo $dpeClFoTag 
-                     echo $dpeClFoBuildDate
+                    echo $dpeClFoBuildDate
                     echo "'{"buildNumber": $dpeBuildTag, "tag": $dpeClFoTag, "buildDate": $dpeClFoBuildDate }'" > storybook-dist/build-date.json
                 '''
             }
