@@ -37,7 +37,7 @@ pipeline {
                     echo "tag: $dpeClFoTag -----" 
                     echo "buildDate: $dpeClFoBuildDate ------"
                     echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
-                    echo "{ \"buildNumber\": \"$dpeBuildTag\", \"tag\": \"$dpeClFoTag\", \"buildDate\": \"$dpeClFoBuildDate\" }" > some-client-text.json
+                    echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"tag\\\": \\\"$dpeClFoTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
                 '''
             }
         }
