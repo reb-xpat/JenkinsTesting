@@ -22,7 +22,7 @@ pipeline {
                       currentBuild.displayName = buildDisplayName
                       env.ENV_BUILDNAME=buildDisplayName
                       env.dpeClFoTag=sh script: '$(git describe)', returnStdout: true
-                      env.dpeClFoBuildDate=sh script: '$(TZ='EST5EDT,M3.2.0,M11.1.0' date)', returnStdout: true
+                      env.dpeClFoBuildDate=sh script: '$(TZ="EST5EDT,M3.2.0,M11.1.0" date)', returnStdout: true
                    }
                  }
            }
