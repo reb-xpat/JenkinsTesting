@@ -21,9 +21,9 @@ pipeline {
                       def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
                       currentBuild.displayName = buildDisplayName
                       env.ENV_BUILDNAME=buildDisplayName
+                   env.dpeClFoTag="\$(git describe)"
+                   env.dpeClFoBuildDate="\$(TZ='EST5EDT,M3.2.0,M11.1.0' date)"
                    }
-                   env.dpeClFoTag=script:sh("$(git describe)")
-                   env.dpeClFoBuildDate=script:sh("$(TZ='EST5EDT,M3.2.0,M11.1.0' date)")
                  }
            }
 
