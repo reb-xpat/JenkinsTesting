@@ -1,0 +1,48 @@
+env.ENV_BUILDNAME="DEV"
+env.dpeClFoTag="Development"
+evn.dpeClFoBuildDate="TimeStamp"
+
+pipeline {
+    agent {
+        docker {
+            image 'registry.rancher.centene.com/envolve-innovation-labs/envolveinnovationlab/eil-cibuild-nodejs:sre-1.0.9-beta-2019.07.22'
+            args '-u root  -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
+    environment {
+        dev = 'true'
+        keypass = credentials("PassKey")
+        deploykey = credentials('DPEDeployKey')
+    }
+    stages {
+
+        stage('Prepare Build Info') {
+                 steps {
+                   script{
+                      def now = new Date()
+                      def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
+                      currentBuild.displayName = buildDisplayName
+                      env.ENV_BUILDNAME=buildDisplayName
+
+                   }
+                   sh '''
+                      env.dpeClFoTag="${git describe}"
+                      env.dpeClFoBuildDate="${TZ='EST5EDT,M3.2.0,M11.1.0' date}"
+                   '''
+                 }
+           }
+
+        stage('Deploy Some Client Foundation') {
+            steps{
+                sh '''
+                    echo "start deploy dpe-client-foundation"
+
+                    dpeBuildTag=$ENV_BUILDNAME
+                    echo $dpeClFoTag 
+                     echo $dpeClFoBuildDate
+                    echo "'{"buildNumber": $dpeBuildTag, "tag": $dpeClFoTag, "buildDate": $dpeClFoBuildDate }'" > storybook-dist/build-date.json
+                '''
+            }
+        }
+    }
+}
