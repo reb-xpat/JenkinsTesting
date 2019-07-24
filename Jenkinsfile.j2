@@ -21,7 +21,7 @@ pipeline {
                       def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
                       currentBuild.displayName = buildDisplayName
                       env.ENV_BUILDNAME=buildDisplayName
-                      env.dpeClFoTag=sh script: "echo \$(git describe | tr ' ' '\n ')", returnStdout: true
+                      env.dpeClFoTag=sh script: "echo \$(git describe | tr ' ' '\n')", returnStdout: true
                       env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date)", returnStdout: true
                    }
                  }
@@ -33,7 +33,7 @@ pipeline {
                     echo "start deploy dpe-client-foundation"
 
                     dpeBuildTag=$ENV_BUILDNAME
-                    echo "buildTag; $ENV_BUILDNAME ---"
+                    echo "buildTag; $dpeBuildTag ---"
                     echo "tag: $dpeClFoTag -----" 
                     echo "buildDate: $dpeClFoBuildDate ------"
                     echo "'{"buildNumber": $dpeBuildTag, "tag": $dpeClFoTag, "buildDate": $dpeClFoBuildDate }'"
