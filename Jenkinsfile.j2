@@ -11,9 +11,9 @@ pipeline {
     environment {
         dev = 'true'
     }
-    try {
-       notifyBuild('STARTED')
-      stages {
+    stages {
+      try {
+        notifyBuild('STARTED')
 
           stage('Prepare Build Info') {
                   steps {
