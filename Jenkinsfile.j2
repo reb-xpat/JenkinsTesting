@@ -41,7 +41,9 @@ pipeline {
           }
 
           stage('finally') {
-            notifyBuild(currentBuild.result)
+            steps{
+              notifyBuild(currentBuild.result)
+            }
           }        
     }
 }
