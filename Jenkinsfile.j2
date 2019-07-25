@@ -2,7 +2,6 @@ env.ENV_BUILDNAME="DEV"
 env.dpeClFoTag="Development"
 env.dpeClFoBuildDate="TimeStamp"
 pipeline {
-    stages {
       try {
     agent {
         docker {
@@ -13,6 +12,7 @@ pipeline {
     environment {
         dev = 'true'
     }
+    stages {
         notifyBuild('STARTED')
 
           stage('Prepare Build Info') {
