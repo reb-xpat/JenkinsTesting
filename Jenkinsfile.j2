@@ -12,10 +12,9 @@ pipeline {
         dev = 'true'
     }
     stages {
-        notifyBuild('STARTED')
-
           stage('Prepare Build Info') {
                   steps {
+                    notifyBuild('STARTED')
                     script{
                         def now = new Date()
                         def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
@@ -40,9 +39,10 @@ pipeline {
                   '''
               }
           }
-        stage("finally') {
-          notifyBuild(currentBuild.result)
-        }        
+
+          stage("finally') {
+            notifyBuild(currentBuild.result)
+          }        
     }
 }
 
