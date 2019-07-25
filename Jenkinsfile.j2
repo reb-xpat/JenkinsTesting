@@ -1,7 +1,6 @@
 env.ENV_BUILDNAME="DEV"
 env.dpeClFoTag="Development"
 env.dpeClFoBuildDate="TimeStamp"
-
 pipeline {
     agent {
         docker {
@@ -12,32 +11,77 @@ pipeline {
     environment {
         dev = 'true'
     }
-    stages {
+    try {
+       notifyBuild('STARTED')
+      stages {
 
-        stage('Prepare Build Info') {
-                 steps {
-                   script{
-                      def now = new Date()
-                      def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
-                      currentBuild.displayName = buildDisplayName
-                      env.ENV_BUILDNAME=buildDisplayName
-                      env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
-                      env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
-                   }
-                 }
-           }
-
-        stage('Deploy Some Client Foundation') {
-            steps{
-                sh '''
-                    echo "start deploy dpe-client-foundation"
-                    cp docker/dpe-script-environment/.aws.credentials.enc ~/
-                    dpeBuildTag=$ENV_BUILDNAME
-
-                    echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
-                    echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"tag\\\": \\\"$dpeClFoTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                '''
+          stage('Prepare Build Info') {
+                  steps {
+                    script{
+                        def now = new Date()
+                        def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
+                        currentBuild.displayName = buildDisplayName
+                        env.ENV_BUILDNAME=buildDisplayName
+                        env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
+                        env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
+                    }
+                  }
             }
-        }
+
+          stage('Deploy Some Client Foundation') {
+              steps{
+                  sh '''
+                      echo "start deploy dpe-client-foundation"
+                      cp docker/dpe-script-environment/.aws.credentials.enc ~/
+                      dpeBuildTag=$ENV_BUILDNAME
+
+                      echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
+                      echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"tag\\\": \\\"$dpeClFoTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
+                      exit 1
+                  '''
+              }
+          }
+      } catch (e) {
+          // If there was an exception thrown, the build failed
+          currentBuild.result = "FAILED"
+          throw e
+        } finally {
+          // Success or failure, always send notifications
+          notifyBuild(currentBuild.result)
+        }        
     }
+}
+
+def notifyBuild(String buildStatus = 'STARTED') {
+  // build status of null means successful
+  buildStatus =  buildStatus ?: 'SUCCESSFUL'
+
+  // Default values
+  def colorName = 'RED'
+  def colorCode = '#FF0000'
+  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+  def summary = "${subject} (${env.BUILD_URL})"
+  def details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+    <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+
+  // Override default values based on build status
+  if (buildStatus == 'STARTED') {
+    color = 'YELLOW'
+    colorCode = '#FFFF00'
+  } else if (buildStatus == 'SUCCESSFUL') {
+    color = 'GREEN'
+    colorCode = '#00FF00'
+  } else {
+    color = 'RED'
+    colorCode = '#FF0000'
+  }
+
+  // Send notifications
+  slackSend (color: colorCode, message: summary)
+
+  emailext(
+      subject: subject,
+      body: details,
+      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+    )
 }
