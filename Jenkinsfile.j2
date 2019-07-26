@@ -38,7 +38,7 @@ pipeline {
 
           stage('Deploy Some Client Foundation') {
               steps{
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                   sh '''
                       echo "start deploy dpe-client-foundation"
                       cp docker/dpe-script-environment/.aws.credentials.enc ~/
