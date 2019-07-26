@@ -24,6 +24,11 @@ pipeline {
                         env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
                     }
                   }
+                  post {
+                      failure {
+                        script { env.FAILURE_STAGE = 'Prepare Build Info' }
+                      }
+                  }                  
             }
 
           stage('Deploy Some Client Foundation') {
@@ -38,6 +43,11 @@ pipeline {
                       currentBuild.result = "FAILED"
                   '''
               }
+              post {
+                failure {
+                  script { env.FAILURE_STAGE = 'Deploy DPE Client Foundation' }
+                }
+              }              
           }      
     }
       post {
