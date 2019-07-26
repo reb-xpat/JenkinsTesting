@@ -14,8 +14,8 @@ pipeline {
     stages {
           stage('Prepare Build Info') {
                   steps {
+                     slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                      catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                        slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                         script{
                             def now = new Date()
                             def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
@@ -31,7 +31,7 @@ pipeline {
                   }
                   post {
                       failure {
-                        script { env.FAILURE_STAGE) = 'Prepare Build Info' }
+                        script { env.FAILURE_STAGE = 'Prepare Build Info' }
                       }
                   }                  
             }
