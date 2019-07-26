@@ -28,7 +28,7 @@ pipeline {
                         ''' 
                   }
                 post {
-                  failuer{
+                  failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
                           slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
