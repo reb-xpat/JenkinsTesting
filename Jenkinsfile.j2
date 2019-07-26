@@ -63,10 +63,10 @@ pipeline {
        changed {
             script {
                 if(currentBuild.result == 'SUCCESS') {
-                    slackSend(color: '#00FF00', message: "SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+                    slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                 }
                 if(currentBuild.result == 'FAILURE') {
-                  slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}  ")
+                  slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}  ")
                 }
             }
         }
