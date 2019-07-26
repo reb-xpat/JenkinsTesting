@@ -32,7 +32,7 @@ pipeline {
                 post {
                   always{
                         script {
-                          if(currentStage.result == 'FAILURE'){
+                          if(stageResult == 'FAILURE'){
                              env.FAILURE_STAGE = 'Build Info'
                              slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
                              env.currentBuild.result == 'SUCCESS'
