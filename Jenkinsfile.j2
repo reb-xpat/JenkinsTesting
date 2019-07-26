@@ -14,7 +14,7 @@ pipeline {
     stages {
           stage('Prepare Build Info') {
                   steps {
-                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+ //                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                      slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                         script{
                             def now = new Date()
@@ -27,7 +27,7 @@ pipeline {
                         sh '''
                           exit -2
                         ''' 
-                     }
+//                     }
                   }
                   post {
                       failure {
