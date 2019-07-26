@@ -14,7 +14,7 @@ pipeline {
     stages {
           stage('Prepare Build Info') {
                   steps {
-                    notifyBuild('STARTED')
+                    slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                     script{
                         def now = new Date()
                         def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
