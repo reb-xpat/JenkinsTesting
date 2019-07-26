@@ -14,7 +14,6 @@ pipeline {
     stages {
           stage('Prepare Build Info') {
                   steps {
-                   // catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                      slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                         script{
                             def now = new Date()
@@ -27,16 +26,12 @@ pipeline {
                         sh '''
                           exit -1
                         ''' 
-                    // }
                   }
                 post {
                   always{
                         script {
-                          if(currentBuild.result == 'FAILURE'){
-                             env.FAILURE_STAGE = 'Build Info'
-                             slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
-                             currentBuild.result == 'SUCCESS'
-                          } 
+                          env.FAILURE_STAGE = 'Build Info'
+                          slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
                         }
                   }
                 }  
@@ -65,10 +60,6 @@ pipeline {
           }      
     }
       post {
-       // only triggered when blue or green sign
-       //success {
-       //    slackSend(color: '#00FF00', message: "SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
-       //}
        changed {
             script {
                 if(currentBuild.result == 'SUCCESS') {
@@ -79,10 +70,6 @@ pipeline {
                 }
             }
         }
-       // triggered when red sign
-       //failure {
-       //    slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE}  ")
-       //}
        always {
          slackSend(color: '#FFFF00', , message: "Completed: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
        }
