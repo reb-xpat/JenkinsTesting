@@ -28,7 +28,7 @@ pipeline {
                         ''' 
                   }
                 post {
-                  always{
+                  failuer{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
                           slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
@@ -46,7 +46,7 @@ pipeline {
 
                       echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
                       echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                      exit 1
+                      exit 0
                   '''
                 }  
               post {
