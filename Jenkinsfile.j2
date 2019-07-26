@@ -24,7 +24,7 @@ pipeline {
                         env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
                     }
                     sh '''
-                      currentBuild.result = "FAILED"
+                      exit -2
                     ''' 
                   }
                   post {
@@ -43,7 +43,7 @@ pipeline {
 
                       echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
                       echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                      currentBuild.result = "FAILED"
+                      exit -3
                   '''
               }
               post {
