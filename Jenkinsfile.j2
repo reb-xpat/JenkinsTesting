@@ -14,28 +14,31 @@ pipeline {
     stages {
           stage('Prepare Build Info') {
                   steps {
-                    slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
-                    script{
-                        def now = new Date()
-                        def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
-                        currentBuild.displayName = buildDisplayName
-                        env.ENV_BUILDNAME=buildDisplayName
-                        env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
-                        env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
-                    }
-                    sh '''
-                      exit -2
-                    ''' 
+                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                        slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+                        script{
+                            def now = new Date()
+                            def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
+                            currentBuild.displayName = buildDisplayName
+                            env.ENV_BUILDNAME=buildDisplayName
+                            env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
+                            env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
+                        }
+                        sh '''
+                          exit -2
+                        ''' 
+                     }
                   }
                   post {
                       failure {
-                        script { env.FAILURE_STAGE = 'Prepare Build Info' }
+                        script { env.FAILURE_STAGE) = 'Prepare Build Info' }
                       }
                   }                  
             }
 
           stage('Deploy Some Client Foundation') {
               steps{
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                   sh '''
                       echo "start deploy dpe-client-foundation"
                       cp docker/dpe-script-environment/.aws.credentials.enc ~/
@@ -45,10 +48,11 @@ pipeline {
                       echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
                       exit -3
                   '''
+                }  
               }
               post {
                 failure {
-                  script { env.FAILURE_STAGE = 'Deploy DPE Client Foundation' }
+                  script { env.FAILURE_STAGE = "$env.FAILURE_STAGE Deploy DPE Client Foundation" }
                 }
               }              
           }      
