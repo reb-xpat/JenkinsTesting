@@ -35,7 +35,7 @@ pipeline {
                           if(currentBuild.result == 'FAILURE'){
                              env.FAILURE_STAGE = 'Build Info'
                              slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
-                             env.currentBuild.result == 'SUCCESS'
+                             currentBuild.result == 'SUCCESS'
                           } 
                         }
                   }
@@ -75,7 +75,7 @@ pipeline {
                     slackSend(color: '#00FF00', message: "SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                 }
                 if(currentBuild.result == 'FAILURE') {
-                  slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE}  ")
+                  slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}  ")
                 }
             }
         }
