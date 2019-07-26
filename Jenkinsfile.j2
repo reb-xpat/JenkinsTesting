@@ -31,7 +31,8 @@ pipeline {
                   }
                   post {
                       failure {
-                        script { env.FAILURE_STAGE = 'Prepare Build Info' }
+                        slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
+
                       }
                   }                  
             }
@@ -52,7 +53,7 @@ pipeline {
               }
               post {
                 failure {
-                  script { env.FAILURE_STAGE = "${env.FAILURE_STAGE} Deploy DPE Client Foundation" }
+                  slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
                 }
               }              
           }      
@@ -64,7 +65,7 @@ pipeline {
        }
        // triggered when red sign
        failure {
-           slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
+           slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} ")
        }
     }
 }
