@@ -52,7 +52,7 @@ pipeline {
               }
               post {
                 failure {
-                  script { env.FAILURE_STAGE = "$env.FAILURE_STAGE Deploy DPE Client Foundation" }
+                  script { env.FAILURE_STAGE = "${env.FAILURE_STAGE} Deploy DPE Client Foundation" }
                 }
               }              
           }      
