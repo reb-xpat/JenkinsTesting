@@ -1,6 +1,7 @@
 env.ENV_BUILDNAME="DEV"
 env.dpeClFoTag="Development"
 env.dpeClFoBuildDate="TimeStamp"
+env.DPE_DEPLOY_KEY
 pipeline {
     agent {
         docker {
@@ -15,7 +16,7 @@ pipeline {
     stages {
           stage('Prepare Build Info') {
                   steps {
-                     slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+                     //slackSend(color: '#FFFF00', , message: "Started: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                         script{
                             def now = new Date()
                             def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
@@ -23,6 +24,7 @@ pipeline {
                             env.ENV_BUILDNAME=buildDisplayName
                             env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
                             env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
+                            env.DPE_DEPLOY_KEY = env.DEPLOYKEY
                         }
                         sh '''
                           exit 0
@@ -32,7 +34,7 @@ pipeline {
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
-                          slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
+                          //slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
                         }
                   }
                 }  
@@ -49,8 +51,8 @@ pipeline {
 
                         echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
                         echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                        echo "deploy key: ${DEPLOYKEY}"
-                        bin/deploy-dpe.sh -p ${DEPLOYKEY} -j
+                        echo "deploy key: $DPE_DEPLOY_KEY"
+                        bin/deploy-dpe.sh -p $DPE_DEPLOY_KEY -j
                         exit 0
                     '''
 //                }  
@@ -59,7 +61,7 @@ pipeline {
                 failure {
                   script {
                     env.FAILURE_STAGE = 'Deploy some client'
-                    slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
+                    //slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
                   }
                 }
               }              
@@ -69,15 +71,15 @@ pipeline {
        changed {
             script {
                 if(currentBuild.result == 'SUCCESS') {
-                    slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+                    //slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                 }
                 if(currentBuild.result == 'FAILURE') {
-                  slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}  ")
+                  //slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}  ")
                 }
             }
         }
        always {
-         slackSend(color: '#FFFF00', , message: "Completed: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+         //slackSend(color: '#FFFF00', , message: "Completed: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
        }
     }
 }
