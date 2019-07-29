@@ -79,8 +79,10 @@ pipeline {
             }
         }
        always {
-         env.FAILURE_STAGE = 'Deploy some client'
-         //slackSend(color: '#FFFF00', , message: "Completed: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+         script {
+            env.FAILURE_STAGE = 'Deploy some client'
+            //slackSend(color: '#FFFF00', , message: "Completed: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+         }
        }
     }
 }
