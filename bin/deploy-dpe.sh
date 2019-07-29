@@ -2,7 +2,7 @@
 
 HOME_FOLDER="~dpe"
 echo "params: $@"
-while getopts "pjd:" opt; do
+while getopts ":p:jd:" opt; do
     case $opt in
         p )
             passkey=$OPTARG
