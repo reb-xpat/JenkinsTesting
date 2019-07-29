@@ -10,7 +10,7 @@ pipeline {
     }
     environment {
         dev = 'true'
-        DEPLOYKEY = credentials("DPEDeployKey")
+        DEPLOYKEY = credentials("xDPEDeployKey")
     }
     stages {
           stage('Prepare Build Info') {
