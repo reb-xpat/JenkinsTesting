@@ -1,7 +1,7 @@
 #!/bin/sh
 
 HOME_FOLDER="~dpe"
-ehco "params: $@"
+echo "params: $@"
 while getopts "pjd:" opt; do
     case $opt in
         p )
