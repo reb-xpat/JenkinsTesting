@@ -50,7 +50,7 @@ pipeline {
 
                        sh "echo '{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
                        sh "echo '{ "buildNumber": "$dpeBuildTag", "buildDate": "$dpeClFoBuildDate" }' > some-client-text.json"
-                       sh "echo "deploy key: $DPE_DEPLOY_KEY""
+                       sh "echo 'deploy key: $DPE_DEPLOY_KEY'"
                        sh "bin/deploy-dpe.sh -p $DPE_DEPLOY_KEY -j"
                         //exit 0
                     //'''
