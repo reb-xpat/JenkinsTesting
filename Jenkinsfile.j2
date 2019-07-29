@@ -38,7 +38,9 @@ pipeline {
             }
 
           stage('Deploy Some Client Foundation') {
-                 def deploykey = credentials("DPEDeployKey")
+                environment {
+                   def deploykey = credentials("DPEDeployKey")
+                }
               steps{
                   sh '''
                       set -x
