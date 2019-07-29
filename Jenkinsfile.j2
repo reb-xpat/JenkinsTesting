@@ -39,6 +39,7 @@ pipeline {
 
           stage('Deploy Some Client Foundation') {
               steps{
+                withCredentials([[ $class: 'secretText', credentialsId: 'DPEDeployKey', deployKey: 'deployKey',]]) {
                   sh '''
                       echo "start deploy dpe-client-foundation"
                       cp docker/dpe-script-environment/.aws.credentials.enc ~/
@@ -46,6 +47,7 @@ pipeline {
 
                       echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
                       echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
+                      
                       exit 0
                   '''
                 }  
