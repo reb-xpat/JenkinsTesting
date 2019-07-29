@@ -32,3 +32,4 @@ if [ "$passkey" = "" ]
      echo "ERROR: Must provide a passkey"
      usage
 fi
+echo "Passkey = $passkey"
