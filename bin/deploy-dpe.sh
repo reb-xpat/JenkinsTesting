@@ -5,7 +5,6 @@ HOME_FOLDER="~dpe"
 while getopts "pjd:" opt; do
     case $opt in
         p )
-            echo "Option: $OPTARG"
             passkey=$OPTARG
             ;;
 
