@@ -39,7 +39,7 @@ pipeline {
 
           stage('Deploy Some Client Foundation') {
               steps{
-                withCredentials([string(credentialsId: 'DPEDeployKey', variable: 'deployKey')]) {
+                 deploykey = credentials("DPEDeployKey")
                   sh '''
                       set -x
                       echo "start deploy dpe-client-foundation"
@@ -48,10 +48,9 @@ pipeline {
 
                       echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
                       echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                      bin/deploy-dpe.sh -p env.deploykey -j
+                      bin/deploy-dpe.sh -p ${deploykey} -j
                       exit 0
-                  '''
-                }  
+                  ''' 
               }
               post {
                 failure {
