@@ -48,7 +48,7 @@ pipeline {
 
                       echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
                       echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                      bin/deploy-dpe.sh -p ${deploykey} -j
+                      bin/deploy-dpe.sh -p ${env.deploykey} -j
                       exit 0
                   '''
                 }  
