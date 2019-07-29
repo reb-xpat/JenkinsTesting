@@ -41,13 +41,14 @@ pipeline {
               steps{
                 withCredentials([string(credentialsId: 'DPEDeployKey', variable: 'deployKey')]) {
                   sh '''
+                      set -x
                       echo "start deploy dpe-client-foundation"
                       cp docker/dpe-script-environment/.aws.credentials.enc ~/
                       dpeBuildTag=$ENV_BUILDNAME
 
                       echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
                       echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                      bin/deploy-dpe.sh -p "${deploykey}" -j 
+                      bin/deploy-dpe.sh -p ${deploykey} -j 
                       exit 0
                   '''
                 }  
