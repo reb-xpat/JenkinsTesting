@@ -2,7 +2,7 @@
 
 HOME_FOLDER="~dpe"
 
-while getopts "dpj:" opt; do
+while getopts "pjd:" opt; do
     case $opt in
         p )
             passkey=$OPTARG
