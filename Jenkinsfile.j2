@@ -42,20 +42,19 @@ pipeline {
 
           stage('Deploy Some Client Foundation') {
               steps{
-//                withCredentials([string(credentialsId: 'DPEDeployKey', variable: 'DEPLOYKEY')]) {
+                withCredentials([string(credentialsId: 'DPEDeployKey', variable: 'DEPLOYKEY')]) {
                     sh '''
-                        set -x
-                        echo "start deploy dpe-client-foundation"
-                        cp docker/dpe-script-environment/.aws.credentials.enc ~/
-                        dpeBuildTag=$ENV_BUILDNAME
+                        sh "set -x"
+                        sh "echo 'start deploy dpe-client-foundation'"
+                        sh "cp docker/dpe-script-environment/.aws.credentials.enc ~/"
+                        sh "dpeBuildTag=$ENV_BUILDNAME"
 
-                        echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
-                        echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                        echo "deploy key: $DPE_DEPLOY_KEY"
-                        bin/deploy-dpe.sh -p $DPE_DEPLOY_KEY -j
-                        exit 0
+                        sh "echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
+                        sh "echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json"
+                        sh "echo 'deploy key: $DPE_DEPLOY_KEY'"
+                        sh "bin/deploy-dpe.sh -p $DPE_DEPLOY_KEY -j"
                     '''
-//                }  
+                }  
               }
               post {
                 failure {
