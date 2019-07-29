@@ -39,7 +39,7 @@ pipeline {
 
           stage('Deploy Some Client Foundation') {
               steps{
-                withCredentials([[ $class: 'secretText', credentialsId: 'DPEDeployKey', deployKey: 'deployKey',]]) {
+                withCredentials([string(credentialsId: 'DPEDeployKey', variable: 'deployKey')]) {
                   sh '''
                       echo "start deploy dpe-client-foundation"
                       cp docker/dpe-script-environment/.aws.credentials.enc ~/
