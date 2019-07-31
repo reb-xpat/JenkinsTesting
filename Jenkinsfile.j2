@@ -76,10 +76,10 @@ pipeline {
             script {
                 def errorMsg = currentBuild.rawBuild.getLog(10)
                 if(currentBuild.result == 'SUCCESS') {
-                    //slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+                    slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                 }
                 if(currentBuild.result == 'FAILURE') {
-                  //slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} Error: errorMsg ")
+                  slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} Error: errorMsg ")
                 }
             }
         }
