@@ -114,7 +114,7 @@ error Command failed with exit code 1.
               post {
                 failure {
                   script {
-                    def errorMsg = currentBuild.getBuildCauses()
+                    def errorMsg = currentBuild.currentResult
                     env.FAILURE_STAGE = 'Deploy some client'
                     slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} Error: ${errorMsg} ")
                   }
