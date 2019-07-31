@@ -66,7 +66,7 @@ pipeline {
                   script {
                     def errorMsg = currentBuild.rawBuild.getLog(10)
                     env.FAILURE_STAGE = 'Deploy some client'
-                    slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} Error: errorMsg ")
+                    slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} Error: ${errorMsg} ")
                   }
                 }
               }              
