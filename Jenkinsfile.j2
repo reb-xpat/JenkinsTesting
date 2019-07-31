@@ -54,7 +54,57 @@ pipeline {
                         dpeBuildJson="$(curl -s http://d2zn28muh0qa4g.cloudfront.net/STORYBOOK/build-date.json | jq '.buildNumber' | tr -d '"')"
                          if [ $dpeBuildJson != $ENV_BUILDNAME ];
                     then
-                        echo "Jenkins build display name $ENV_BUILDNAME does not match json content -> $dpeBuildJson"
+                        echo "$ yarn run lint && cross-env NODE_ENV=test jest --colors
+$ $(yarn bin)/eslint src --max-warnings=0 && $(yarn bin)/eslint test
+{ Error: Command failed: yarn run test
+PASS src/store/auth.spec.js
+FAIL src/harness/MSPAmberWidget/businessLogic/getAmberChatBotPath.spec.js
+  ● getAmberChatBotPath Should return /chat/assistant when pathname is /pages/home.html
+ 
+    expect(received).toBe(expected) // Object.is equality
+ 
+    Expected: "/chat/assistant"
+    Received: "chat/assistant"
+ 
+      3 | test('getAmberChatBotPath Should return /chat/assistant when pathname is /pages/home.html', async () => {
+      4 |   const amberChatBotPath = getAmberChatBotPath('/pages/home.html');
+    > 5 |   expect(amberChatBotPath).toBe('/chat/assistant');
+        |                            ^
+      6 | });
+      7 | 
+      8 | test('getAmberChatBotPath Should return null when pathname is non existing pathname', async () => {
+ 
+      at Object.toBe (src/harness/MSPAmberWidget/businessLogic/getAmberChatBotPath.spec.js:5:28)
+ 
+PASS src/store/plan.spec.js
+PASS src/store/member.spec.js
+PASS src/index.spec.js
+ 
+Test Suites: 1 failed, 4 passed, 5 total
+Tests:       1 failed, 11 passed, 12 total
+Snapshots:   0 total
+Time:        5.81s
+Ran all test suites.
+error Command failed with exit code 1.
+$ NODE_ENV=test yarn lint && $(yarn bin)/jest
+$ eslint src --max-warnings=0 && eslint test --max-warnings=0
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+ 
+    at Promise.all.then.arr (/mnt/mesos/sandbox/jenkins/workspace/tal-id-feature-not-showing--MBEX7QHCTQGUOZYBWNEK4FGIZSQOMVUQRELYAYDOOZRJIXCDMJYQ/node_modules/lerna/node_modules/execa/index.js:236:11)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+  code: 1,
+  killed: false,
+  stdout:
+   '$ NODE_ENV=test yarn lint && $(yarn bin)/jest\n$ eslint src --max-warnings=0 && eslint test --max-warnings=0\ninfo Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.\n',
+  stderr:
+   'PASS src/store/auth.spec.js\nFAIL src/harness/MSPAmberWidget/businessLogic/getAmberChatBotPath.spec.js\n  ● getAmberChatBotPath Should return /chat/assistant when pathname is /pages/home.html\n\n    expect(received).toBe(expected) // Object.is equality\n\n    Expected: "/chat/assistant"\n    Received: "chat/assistant"\n\n      3 | test(\'getAmberChatBotPath Should return /chat/assistant when pathname is /pages/home.html\', async () => {\n      4 |   const amberChatBotPath = getAmberChatBotPath(\'/pages/home.html\');\n    > 5 |   expect(amberChatBotPath).toBe(\'/chat/assistant\');\n        |                            ^\n      6 | });\n      7 | \n      8 | test(\'getAmberChatBotPath Should return null when pathname is non existing pathname\', async () => {\n\n      at Object.toBe (src/harness/MSPAmberWidget/businessLogic/getAmberChatBotPath.spec.js:5:28)\n\nPASS src/store/plan.spec.js\nPASS src/store/member.spec.js\nPASS src/index.spec.js\n\nTest Suites: 1 failed, 4 passed, 5 total\nTests:       1 failed, 11 passed, 12 total\nSnapshots:   0 total\nTime:        5.81s\nRan all test suites.\nerror Command failed with exit code 1.\n',
+  failed: true,
+  signal: null,
+  cmd: 'yarn run test',
+  timedOut: false,
+  exitCode: 1 }
+error Command failed with exit code 1.
+ "
                         exit 1
                     fi
                         exit 0
