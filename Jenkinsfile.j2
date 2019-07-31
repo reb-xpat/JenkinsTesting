@@ -51,6 +51,12 @@ pipeline {
                         echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
                         echo "deploy key: $DEPLOYKEY"
                         bin/deploy-dpe.sh -p $DEPLOYKEY -j
+                        dpeBuildJson="$(curl -s http://d2zn28muh0qa4g.cloudfront.net/STORYBOOK/build-date.json | jq '.buildNumber' | tr -d '"')"
+                         if [ $dpeBuildJson != $ENV_BUILDNAME ];
+                    then
+                        echo "Jenkins build display name $ENV_BUILDNAME does not match json content -> $dpeBuildJson"
+                        exit 1
+                    fi
                         exit 0
                     '''
                 }  
