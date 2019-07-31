@@ -74,6 +74,7 @@ pipeline {
       post {
        changed {
             script {
+                currentBuild.rawBuild.getLog(10)
                 if(currentBuild.result == 'SUCCESS') {
                     //slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
                 }
