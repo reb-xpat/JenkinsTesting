@@ -27,7 +27,7 @@ pipeline {
                         sh '''
                           echo $PWD
                           echo $WORKSPACE
-                          ls -ali ~/
+                          ls -ali $WORKSPACE
                           exit 0
                         ''' 
                   }
