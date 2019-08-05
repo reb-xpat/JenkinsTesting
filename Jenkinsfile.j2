@@ -26,7 +26,7 @@ pipeline {
                         }
                         sh '''
                           echo $PWD
-                          echo ${env.WORKSPACE}
+                          echo $WORKSPACE
                           exit 0
                         ''' 
                   }
