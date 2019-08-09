@@ -31,6 +31,17 @@ pipeline {
                           echo $PWD
                           echo $WORKSPACE
                           ls -ali $WORKSPACE/node_modules
+                          echo "Therefore far but the some abandonedly more a less classically because stopped ground far much waked dug and where incessant fish mechanically hurriedly fractious out hence lynx for salmon until abominable idiotic opossum unsafely and.
+
+Vaguely jeez execrably much fruitful ouch pithily much oh far comfortable much next let hence so opened alongside crazily pithily less hound during falsely.
+
+When one where hung amid unthinkingly obsessively pessimistically far inoffensive before because saddled alas panther and thus epidemically oh erotically well graceful sewed rattlesnake alas forbidding fitted set much far and.
+
+Oh that dived and played gazelle set pinched wildebeest visual notwithstanding ravenously earnestly admirable outside darn outbid and oriole wow cockatoo hello forward one far some while beat dry.
+
+Koala rang one outside less because condescendingly this flinched abundantly decorous serene oh uneasy emphatic and a watchful abstrusely shrank.
+"
+                          echo "something terrible has happened, exiting with error code."
                           exit 1
                         ''' 
                   }
@@ -38,7 +49,8 @@ pipeline {
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
-                          //slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} ")
+                          errorMsg = currentBuild.rawBuild.getLog(30)
+                          slackSend
                         }
                         sh'''
                           echo yarn run mongod-stop
