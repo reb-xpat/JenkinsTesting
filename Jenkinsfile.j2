@@ -48,7 +48,7 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
-                          errorMsg = currentBuild.rawBuild.getLog(30)
+                          errorMsg = currentBuild.rawBuild.getLog(10)
                         }
                         sh'''
                           echo yarn run mongod-stop
@@ -86,7 +86,7 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
                 failure {
                   script {
                     env.FAILURE_STAGE = 'Deploy some client'
-                    errorMsg = currentBuild.rawBuild.getLog(30)
+                    errorMsg = currentBuild.rawBuild.getLog(10)
                   }
                 }
               }              
