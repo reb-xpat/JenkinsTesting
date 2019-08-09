@@ -96,15 +96,16 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
           }      
     }
       post {
- changed {
-            script {
-                if(currentBuild.result == 'SUCCESS') {
-                    slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} ")
-                }
-                if(currentBuild.result == 'FAILURE') {
-                  slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} in Stage $FAILURE_STAGE Error: $errorMsg ")
-                }
-            }
+          always {
+                      script {
+                          if(currentBuild.result == 'SUCCESS') {
+                              slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} ")
+                          }
+                          if(currentBuild.result == 'FAILURE') {
+                            slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} in Stage $FAILURE_STAGE Error: $errorMsg ")
+                          }
+                      }
+          }
        }
     }
 }
