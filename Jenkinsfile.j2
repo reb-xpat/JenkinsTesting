@@ -4,9 +4,6 @@ env.dpeClFoBuildDate="TimeStamp"
 env.DPE_DEPLOY_KEY
 def errorMsg
 
-def slack_send() {
-  slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} Error: ${errorMsg} ")
-}
 
 pipeline {
     agent {
@@ -117,4 +114,8 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
          }
        }
     }
+}
+
+slack_send() {
+  slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} Error: ${errorMsg} ")
 }
