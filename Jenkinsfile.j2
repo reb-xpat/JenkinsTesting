@@ -99,7 +99,7 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
                       slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} ")
                   }
                   if(currentBuild.result == 'FAILURE') {
-                    slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} in Stage $FAILURE_STAGE Error: $errorMsg ")
+                    slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} in Stage $env.FAILURE_STAGE Error: $errorMsg ")
                   }
               }
           }
