@@ -48,7 +48,7 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
                         script {
                           env.FAILURE_STAGE = 'Build Info'
                           errorMsg = currentBuild.rawBuild.getLog(30)
-                          slack_send()
+                          slack_send(errorMsg)
                         }
                         sh'''
                           echo yarn run mongod-stop
@@ -87,7 +87,7 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
                   script {
                     env.FAILURE_STAGE = 'Deploy some client'
                     errorMsg = currentBuild.rawBuild.getLog(30)
-                    slack_send()
+                    slack_send(errorMsg)
                   }
                 }
               }              
@@ -98,10 +98,10 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
             script {
                 errorMsg = currentBuild.rawBuild.getLog(10)
                 if(currentBuild.result == 'SUCCESS') {
-                    slack_send()
+                    slack_send(errorMsg)
                 }
                 if(currentBuild.result == 'FAILURE') {
-                  slack_send()
+                  slack_send(errorMsg)
                 }
             }
         }
@@ -114,7 +114,7 @@ Koala rang one outside less because condescendingly this flinched abundantly dec
     }
 }
 
-def slack_send() {
+def slack_send(string errorMsg) {
   slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} Error: ${errorMsg} ")
 }
 def showMavenVersion(String a) {
