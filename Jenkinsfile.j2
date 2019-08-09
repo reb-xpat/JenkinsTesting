@@ -3,6 +3,7 @@ env.dpeClFoTag="Development"
 env.dpeClFoBuildDate="TimeStamp"
 env.DPE_DEPLOY_KEY
 def errorMsg
+
 def slack_send = slackSend(color: '#FF0000', message: "FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} failed stage ${env.FAILURE_STAGE} Error: ${errorMsg} ")
 pipeline {
     agent {
@@ -85,12 +86,12 @@ pipeline {
       post {
        changed {
             script {
-                def errorMsg = currentBuild.rawBuild.getLog(10)
+                errorMsg = currentBuild.rawBuild.getLog(10)
                 if(currentBuild.result == 'SUCCESS') {
-                    slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}")
+                    slack_send
                 }
                 if(currentBuild.result == 'FAILURE') {
-                  slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} Error: errorMsg ")
+                  slack_send
                 }
             }
         }
