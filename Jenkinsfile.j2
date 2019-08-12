@@ -30,7 +30,7 @@ pipeline {
                           echo $PWD
                           echo $WORKSPACE
                           ls -ali $WORKSPACE/node_modules
-                          echo "$ gulp compile
+                          echo "gulp compile
 [16:26:22] Using gulpfile /mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/packages/evie-client-web/gulpfile.js
 [16:26:22] Starting 'compile'...
 [16:26:23] Finished 'compile' after 998 ms
@@ -163,7 +163,7 @@ Error: 'isMemberEnrolled' is not exported by ../eil-common/lib/index.client.js
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
-                          errorMsg = currentBuild.rawBuild.getLog(100) =~ /lerna ERR! /
+                          errorMsg = currentBuild.rawBuild.getLog(1000) =~ /lerna ERR! /
                         }
                         sh'''
                           echo yarn run mongod-stop
