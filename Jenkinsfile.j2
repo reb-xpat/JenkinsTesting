@@ -31,14 +31,13 @@ pipeline {
                         sh '''
                           echo $PWD
                           echo $WORKSPACE
-                          exit 1
+                          exit -1
                         '''
                 post {
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
                           rawLog = currentBuild.rawBuild.getLog(30)
-                          echo rawLog
                           errorMsg = rawLog =~ /lerna ERR! /
                         }
                         sh'''
