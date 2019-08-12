@@ -75,7 +75,7 @@ pipeline {
                 failure {
                   script {
                     env.FAILURE_STAGE = 'Deploy some client'
-                    errorMsg = currentBuild.rawBuild.getLog(10)
+                    errorMsg = currentBuild.rawBuild.getLog(30)
                   }
                 }
               }              
