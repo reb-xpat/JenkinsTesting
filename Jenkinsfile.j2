@@ -37,8 +37,7 @@ pipeline {
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
-                          def matcher = /lerna ERR! /
-                          errorMsg = rawLog
+                          errorMsg = manager.getLogMatcher(/lerna ERR! /)
                         }
                         sh'''
                           echo yarn run mongod-stop
