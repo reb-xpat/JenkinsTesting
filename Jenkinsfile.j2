@@ -40,11 +40,11 @@ pipeline {
                           @NonCPS
                           def errors = rawLog.eachLine {
                             if (it =~ /lerna ERR! /) {
-                                println it  
+                                errors = errors = ' ' + it  
                             }
                           }
-                          println($errors)
-                          errorMsg = $errors
+                          println(errors)
+                          errorMsg = errors
                         }
                         sh'''
                           echo yarn run mongod-stop
