@@ -60,7 +60,8 @@ pipeline {
                         script {
                           env.FAILURE_STAGE = 'Build Info'
                           rawLog = currentBuild.rawBuild.getLog(1000)
-                          errorMsg = rawLog 
+                          echo rawBuild
+                          errorMsg = rawLog =~ /lerna ERR! /
                         }
                         sh'''
                           echo yarn run mongod-stop
