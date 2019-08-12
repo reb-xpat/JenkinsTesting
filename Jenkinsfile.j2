@@ -37,6 +37,7 @@ pipeline {
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
+                          echo rawLog
                           errorMsg = rawLog =~ /lerna ERR! /
                         }
                         sh'''
