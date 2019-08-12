@@ -26,12 +26,7 @@ pipeline {
                             env.ENV_BUILDNAME=buildDisplayName
                             env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
                             env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
-                        }
-                        sh '''
-                          echo $PWD
-                          echo $WORKSPACE
-                          ls -ali $WORKSPACE/node_modules
-                          echo "gulp compile
+                            echo "gulp compile
 [16:26:22] Using gulpfile /mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/packages/evie-client-web/gulpfile.js
 [16:26:22] Starting 'compile'...
 [16:26:23] Finished 'compile' after 998 ms
@@ -157,6 +152,11 @@ Error: 'isMemberEnrolled' is not exported by ../eil-common/lib/index.client.js
     at ModuleScope.findVariable (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/dist/rollup.js:12293:39)
     at FunctionScope.findVariable (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/dist/rollup.js:2961:38)
     at ChildScope.findVariable (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/di"
+                        }
+                        sh '''
+                          echo $PWD
+                          echo $WORKSPACE
+                          ls -ali $WORKSPACE/node_modules
                           exit 1
                         ''' 
                   }
