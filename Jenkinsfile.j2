@@ -38,10 +38,8 @@ pipeline {
                           env.FAILURE_STAGE = 'Build Info'
                           @NonCPS
                           def errors
-                          rawLog.eachLine {
-                            if (it =~ /lerna ERR! /) {
-                                errors = errors + '\n' + it  
-                            }
+                          if (rawLog =~ /lerna ERR! Error /) {
+                                errors = rawLog  
                           }
                           println(errors)
                           errorMsg = errors
