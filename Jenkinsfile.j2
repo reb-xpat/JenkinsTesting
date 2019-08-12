@@ -26,9 +26,6 @@ pipeline {
                             env.ENV_BUILDNAME=buildDisplayName
                             env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
                             env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
-                        }
-                        sh '''
-                          echo $PWD
                           echo $WORKSPACE
                           echo "[16:26:24] Starting 'compile'... [16:26:24] Finished 'compile' after 167 ms" 
                           echo "lerna ERR! compile Errored while running script in 'dpe-client-interceptor'"
@@ -53,6 +50,9 @@ pipeline {
                           echo "Error: 'isMemberEnrolled' is not exported by ../eil-common/lib/index.client.js"     
                           echo "at error (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/dist/rollup.js:9365:30)     at Module.error (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/dist/rollup.js:13272:9)     at handleMissingExport (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/dist/rollup.js:13194:21)     at Module.traceVariable (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/dist/rollup.js:13586:17)"     
                           echo "at ModuleScope.findVariable (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/dist/rollup.js:12293:39) at FunctionScope.findVariable (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/dist/rollup.js:2961:38) at ChildScope.findVariable (/mnt/mesos/sandbox/jenkins/workspace/nvolveinnovationlab_PR-1604-ACXS4AWC5VZQEQSKKR3E4B5VTI7AVIHTJNPPXZBK2RS7NPROG3ZQ/node_modules/rollup/di"
+                        }
+                        sh '''
+                          echo $PWD
                           exit 1
                         '''
                 post {
