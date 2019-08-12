@@ -3,6 +3,7 @@ env.dpeClFoTag="Development"
 env.dpeClFoBuildDate="TimeStamp"
 env.DPE_DEPLOY_KEY
 def errorMsg
+def rawLog
 
 pipeline {
     agent {
@@ -163,7 +164,8 @@ Error: 'isMemberEnrolled' is not exported by ../eil-common/lib/index.client.js
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
-                          errorMsg = currentBuild.rawBuild.getLog(1000) =~ /lerna ERR! /
+                          rawLog = currentBuild.rawBuild.getLog(1000)
+                          errorMsg = rawLog =~ /lerna ERR! /
                         }
                         sh'''
                           echo yarn run mongod-stop
