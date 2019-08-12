@@ -37,11 +37,13 @@ pipeline {
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
+                          @NonCPS
                           def errors = rawLog.eachLine {
-                          if (it =~ /lerna ERR! /) {
-                              println it  
+                            if (it =~ /lerna ERR! /) {
+                                println it  
+                            }
                           }
-                      }  
+                          println(errors)  
                           errorMsg = errors
                         }
                         sh'''
