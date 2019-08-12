@@ -163,7 +163,7 @@ Error: 'isMemberEnrolled' is not exported by ../eil-common/lib/index.client.js
                   failure{
                         script {
                           env.FAILURE_STAGE = 'Build Info'
-                          errorMsg = currentBuild.rawBuild.getLog() =~ "lerena ERR!"
+                          errorMsg = currentBuild.rawBuild.getLog(100) =~ "lerena ERR!"
                         }
                         sh'''
                           echo yarn run mongod-stop
