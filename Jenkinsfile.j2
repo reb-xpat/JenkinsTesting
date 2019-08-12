@@ -26,7 +26,6 @@ pipeline {
                             env.ENV_BUILDNAME=buildDisplayName
                             env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
                             env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
-                          echo $WORKSPACE
                           echo "[16:26:24] Starting 'compile'... [16:26:24] Finished 'compile' after 167 ms" 
                           echo "lerna ERR! compile Errored while running script in 'dpe-client-interceptor'"
                           echo "lerna ERR! execute callback with error" 
@@ -53,6 +52,7 @@ pipeline {
                         }
                         sh '''
                           echo $PWD
+                          echo $WORKSPACE
                           exit 1
                         '''
                 post {
