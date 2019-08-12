@@ -39,6 +39,7 @@ pipeline {
                           @NonCPS
                           def errors
                           if (rawLog =~ /lerna ERR! Error /) {
+                                 println('found one') 
                                 errors = rawLog  
                           }
                           println(errors)
