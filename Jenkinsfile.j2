@@ -35,8 +35,8 @@ pipeline {
                   }     
                 post {
                   failure{
-                        @NonCPS
                         script {
+                        @NonCPS
                           env.FAILURE_STAGE = 'Build Info'
                           errorMsg = rawLog =~ /lerna ERR! /
                         }
