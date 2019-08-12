@@ -43,8 +43,8 @@ pipeline {
                                 println it  
                             }
                           }
-                          println(errors)  
-                          errorMsg = errors
+                          println(${errors})
+                          errorMsg = ${errors}
                         }
                         sh'''
                           echo yarn run mongod-stop
