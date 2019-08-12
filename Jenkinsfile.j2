@@ -38,7 +38,6 @@ pipeline {
                         script {
                           env.FAILURE_STAGE = 'Build Info'
                           @NonCPS
-                          //rawLog = currentBuild.rawBuild.getLog(100)
                           errorMsg = rawLog =~ /lerna ERR! /
                         }
                         sh'''
