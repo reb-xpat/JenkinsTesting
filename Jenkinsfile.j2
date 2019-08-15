@@ -34,23 +34,19 @@ pipeline {
                   }     
                 post {
                   failure{
-                        script {
-                          env.FAILURE_STAGE = 'Build Info'
-                          @NonCPS
-                          def i = rawLog =~ /lerna ERR! Error /
-                          def errors
-                          println(i)
-                          if (i) {
-                                 println('found one') 
-                                errors = i 
-                          }
-                          println(errors)
-                          errorMsg = errors
-                        }
-                        sh'''
-                          echo yarn run mongod-stop
-                          pwd
-                        '''
+                    script {
+                          def logContent = Jenkins.getInstance()
+                            .getItemByFullName(env.JOB_NAME)
+                            .getBuildByNumber(
+                                Integer.parseInt(env.BUILD_NUMBER))
+                            .logFile.text
+                        def match = (rawLog =~ /lerna ERR! (!) /)
+                        println(match)
+                    }
+                    sh'''
+                      echo yarn run mongod-stop
+                      pwd
+                    '''
                   }
                 }    
             }
