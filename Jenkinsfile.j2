@@ -42,7 +42,7 @@ pipeline {
                                 Integer.parseInt(env.BUILD_NUMBER))
                             .logFile.text
                         def match = (rawLog =~ /lerna ERR!/)
-                        println "match " + match[0][0]
+                        println "match " + match[0][1]
                     }
                     sh'''
                       echo yarn run mongod-stop
