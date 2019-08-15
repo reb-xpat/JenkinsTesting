@@ -35,6 +35,7 @@ pipeline {
                 post {
                   failure{
                     script {
+                          println(rawLog)
                           def logContent = Jenkins.getInstance()
                             .getItemByFullName(env.JOB_NAME)
                             .getBuildByNumber(
