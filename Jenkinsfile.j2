@@ -41,7 +41,7 @@ pipeline {
                             .getBuildByNumber(
                                 Integer.parseInt(env.BUILD_NUMBER))
                             .logFile.text
-                        def match = (rawLog =~ /lerna ERR! Error /)
+                        def match = (rawLog =~ /lerna ERR! Error \d+/)
                         println "match " + match[0]
                     }
                     sh'''
