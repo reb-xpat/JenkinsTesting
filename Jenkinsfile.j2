@@ -41,8 +41,8 @@ pipeline {
                             .getBuildByNumber(
                                 Integer.parseInt(env.BUILD_NUMBER))
                             .logFile.text
-                        def match = (rawLog =~ /lerna ERR! Error \d+: */)
-                        println "match " + match[0] + match[0][1]
+                        def match = (rawLog =~ /lerna ERR! Error \d+: \w*/)
+                        println "match " + match[0]
                     }
                     sh'''
                       echo yarn run mongod-stop
