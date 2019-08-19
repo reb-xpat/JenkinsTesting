@@ -25,6 +25,7 @@ pipeline {
                             env.ENV_BUILDNAME=buildDisplayName
                             env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
                             env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
+                            env.JENKINS_HOME=$(dirname $(PWD))
                         }
                         sh '''
                           echo $PWD
@@ -37,6 +38,7 @@ pipeline {
                     sh'''
                       echo yarn run mongod-stop
                       pwd
+
                       cat ${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log
                     '''
                   }
