@@ -37,7 +37,7 @@ pipeline {
                   failure{
                     sh'''
                       echo yarn run mongod-stop
-                      echo "cat logfile
+                      echo "cat logfile"
                       cat "$(dirname $(dirname $(pwd)))/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
                       echo "done with cat"
                     '''
