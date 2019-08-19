@@ -28,7 +28,7 @@ pipeline {
                             env.JENKINS_HOME=sh script: "echo \$(dirname \$(dirname \$(pwd))) | tr -d '\n'", returnStdout: true
                         }
                         sh '''
-                          echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
+                          echo "######## $JENKINS_HOME/$JOB_NAME/$BUILD_NUMBER ########"
                           echo $WORKSPACE
                           exit -1
                         '''
@@ -37,8 +37,8 @@ pipeline {
                   failure{
                     sh'''
                       echo yarn run mongod-stop
-                      echo "cat logfile in ${JENKINS_HOME}"
-                      cat "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
+                      echo "cat logfile in $JENKINS_HOME"
+                      cat "$JENKINS_HOME/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
                       echo "done with cat"
                     '''
                   }
