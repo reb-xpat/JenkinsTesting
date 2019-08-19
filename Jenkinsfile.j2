@@ -25,10 +25,10 @@ pipeline {
                             env.ENV_BUILDNAME=buildDisplayName
                             env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
                             env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
-                            env.JENKINS_HOME=sh script: "echo \$(dirname \$(dirname \$(pwd))) | tr -d '\n' | xargs", returnStdout: true
+                            env.JENKINS_HOME=sh script: "\$(dirname \$(dirname \$(pwd)))", returnStdout: true
                         }
                         sh '''
-                          echo "$JENKINS_HOME/$JOB_NAME/$BUILD_NUMBER"
+                          echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
                           echo $WORKSPACE
                           exit -1
                         '''
@@ -37,8 +37,8 @@ pipeline {
                   failure{
                     sh'''
                       echo yarn run mongod-stop
-                      echo "cat logfile"
-                      cat "$(dirname $(dirname $(pwd)))/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
+                      echo "cat logfile in ${JENKINS_HOME}"
+                      cat "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
                       echo "done with cat"
                     '''
                   }
