@@ -35,14 +35,7 @@ pipeline {
                 post {
                   failure{
                     script {
-                          println(rawLog)
-                          def logContent = Jenkins.getInstance()
-                            .getItemByFullName(env.JOB_NAME)
-                            .getBuildByNumber(
-                                Integer.parseInt(env.BUILD_NUMBER))
-                            .logFile.text
-                        def match = (rawLog =~ /lerna ERR! \(!\) (.*?)/)
-                        println "match " + match[0]
+                         cat ${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log
                     }
                     sh'''
                       echo yarn run mongod-stop
