@@ -20,8 +20,8 @@ pipeline {
           stage('Prepare Build Info') {
                   when {
                         anyOf {
-                          branch 'master';
-                          branch 'development';
+                          branch '*master';
+                          branch '*development';
                           branch 'PR-*'
                         }
                     }
