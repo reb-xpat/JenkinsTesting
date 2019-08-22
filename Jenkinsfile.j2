@@ -48,7 +48,7 @@ pipeline {
 
           stage('Prepare Branch Build Info') {
               when {
-                expression { BRANCH_NAME ==~ /(release | interceptor)/ }
+                expression { BRANCH_NAME ==~ /(release*)/ }
               }
               steps {
                 script{
