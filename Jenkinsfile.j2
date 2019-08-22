@@ -71,6 +71,26 @@ pipeline {
                 }
               }
           }
+          stage('build app') {
+            steps {
+                      sh '''
+                        echo $BRANCH_NAME
+                        echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
+                        echo $WORKSPACE
+                        exit 0
+                      '''
+                }     
+              post {
+                failure{
+                  sh'''
+                    echo yarn run mongod-stop
+                    echo "cat logfile in ${JENKINS_HOME}"
+                    cat "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
+                    echo "done with cat"
+                  '''
+                }
+              }    
+          }
 
           stage('Deploy Some Client Foundation') {
               steps{
