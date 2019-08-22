@@ -35,12 +35,6 @@ pipeline {
                             env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
                             env.JENKINS_HOME=sh script: "echo \$(dirname \$(dirname \$(pwd))) | tr -d '\n'", returnStdout: true
                         }
-                        sh '''
-                          echo $BRANCH_NAME
-                          echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
-                          echo $WORKSPACE
-                          exit 0
-                        '''
                   }     
                 post {
                   failure{
