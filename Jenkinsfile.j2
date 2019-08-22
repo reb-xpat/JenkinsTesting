@@ -18,6 +18,12 @@ pipeline {
     }
     stages {
           stage('Prepare Build Info') {
+                  when {
+                        anyOf {
+                          branch 'master';
+                          branch 'staging'
+                        }
+                    }
                   steps {
                         script{
                             def now = new Date()
@@ -49,7 +55,11 @@ pipeline {
 
           stage('Prepare Branch Build Info') {
               when {
-                expression { BRANCH_NAME ==~ /(release\/*)/ }
+                 not {
+                  anyOf {
+                    branch 'master';
+                    branch 'staging'
+                  }
               }
               steps {
                 script{
