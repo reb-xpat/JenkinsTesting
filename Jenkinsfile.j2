@@ -38,7 +38,7 @@ pipeline {
                           echo $BRANCH_NAME
                           echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
                           echo $WORKSPACE
-                          exit -1
+                          exit 0
                         '''
                   }     
                 post {
