@@ -53,7 +53,7 @@ pipeline {
               steps {
                 script{
                     def now = new Date()
-                    def buildDisplayName=sh script: "echo \$(git branch | grep \\\* | cut -d ' ' -f2)", returnStdout: true
+                    def buildDisplayName=sh script: "echo \$(git branch | grep \\* | cut -d ' ' -f2)", returnStdout: true
                     currentBuild.displayName = buildDisplayName
                     env.ENV_BUILDNAME=buildDisplayName
                     env.EVN_RELEASE_TAG=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
