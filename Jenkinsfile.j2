@@ -21,8 +21,8 @@ pipeline {
                   when {
                         anyOf {
                           branch '';
-                          branch '*/master';
-                          branch '*/development';
+                          branch 'master';
+                          branch 'development';
                           branch 'PR-*'
                         }
                     }
