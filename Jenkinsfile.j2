@@ -55,7 +55,9 @@ pipeline {
 
           stage('Prepare Branch Build Info') {
               when { 
-                expression { branch "release\/*" }
+                anyOf { 
+                    branch "release/*" 
+                  }
               }
               steps {
                 script{
