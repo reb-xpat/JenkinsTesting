@@ -29,6 +29,7 @@ pipeline {
                             env.JENKINS_HOME=sh script: "echo \$(dirname \$(dirname \$(pwd))) | tr -d '\n'", returnStdout: true
                         }
                         sh '''
+                          echo $BRANCH_NAME
                           echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
                           echo $WORKSPACE
                           exit -1
