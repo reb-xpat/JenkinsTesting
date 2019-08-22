@@ -68,7 +68,7 @@ pipeline {
           stage('build app') {
             steps {
                       sh '''
-                        echo $BRANCH_NAME
+                        echo $env.BRANCH_NAME
                         echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
                         echo $WORKSPACE
                         exit 0
