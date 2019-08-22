@@ -21,7 +21,7 @@ pipeline {
                   when {
                         anyOf {
                           branch 'master';
-                          branch 'staging'
+                          branch 'development'
                         }
                     }
                   steps {
@@ -55,7 +55,7 @@ pipeline {
 
           stage('Prepare Branch Build Info') {
               when { 
-                expression { branch "*release/*"}
+                expression { branch "release/*"}
               }
               steps {
                 script{
