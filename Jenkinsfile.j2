@@ -55,7 +55,7 @@ pipeline {
 
           stage('Prepare Branch Build Info') {
               when { 
-                expression { BRANCH_NAME ==~ /release\/* }
+                expression { BRANCH_NAME ==~ /release\/* /}
               }
               steps {
                 script{
