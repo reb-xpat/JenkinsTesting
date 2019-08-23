@@ -28,6 +28,7 @@ pipeline {
                     }
                   steps {
                     script {
+                      def now = new Date()
                       def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
                     }
                   }     
@@ -48,6 +49,7 @@ pipeline {
               }
               steps {
                 script{
+                    def now = new Date()        
                     def buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
                 }
               }
@@ -55,7 +57,6 @@ pipeline {
           stage('build app') {
             steps {
                         script{
-                            def now = new Date()
                             currentBuild.displayName = buildDisplayName
                             env.ENV_BUILDNAME=buildDisplayName
                             env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
