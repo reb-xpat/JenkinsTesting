@@ -98,12 +98,12 @@ pipeline {
                         echo "deploy key: $DEPLOYKEY"
                         bin/deploy-dpe.sh -p $DEPLOYKEY -j
                         dpeBuildJson="$(curl -s http://d2zn28muh0qa4g.cloudfront.net/STORYBOOK/build-date.json | jq '.buildNumber' | tr -d '"')"
-                         if [ $dpeBuildJson != $ENV_BUILDNAME ];
-                    then
-                        echo "should have failed"
-                        exit 0
-                    fi
-                        exit 0
+                       if [ $dpeBuildJson != $ENV_BUILDNAME ];
+                        then
+                            echo "should have failed"
+                            exit 0
+                        fi
+                            exit 0
                     '''
                 }  
               }
