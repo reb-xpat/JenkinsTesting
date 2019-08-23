@@ -28,9 +28,8 @@ pipeline {
                     }
                   steps {
                     script {
-                      def buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
+                      def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
                     }
-
                   }     
                 post {
                   failure{
