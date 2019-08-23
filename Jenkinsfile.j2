@@ -27,23 +27,15 @@ pipeline {
                         }
                     }
                   steps {
-                        script{
-                            def now = new Date()
-                            def buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
-                            currentBuild.displayName = buildDisplayName
-                            env.ENV_BUILDNAME=buildDisplayName
-                            env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
-                            env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
-                            env.JENKINS_HOME=sh script: "echo \$(dirname \$(dirname \$(pwd))) | tr -d '\n'", returnStdout: true
-                        }
+                    script {
+                      def buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
+                    }
+
                   }     
                 post {
                   failure{
                     sh'''
                       echo yarn run mongod-stop
-                      echo "cat logfile in ${JENKINS_HOME}"
-                      cat "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
-                      echo "done with cat"
                     '''
                   }
                 }    
@@ -57,18 +49,22 @@ pipeline {
               }
               steps {
                 script{
-                    def now = new Date()
                     def buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
-                    currentBuild.displayName = buildDisplayName
-                    env.ENV_BUILDNAME=buildDisplayName
-                    env.EVN_RELEASE_TAG=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
-                    env.EVN_RELEASE_DATE=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
                 }
               }
           }
           stage('build app') {
             steps {
+                        script{
+                            def now = new Date()
+                            currentBuild.displayName = buildDisplayName
+                            env.ENV_BUILDNAME=buildDisplayName
+                            env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
+                            env.dpeClFoBuildDate=sh script: "echo \$(TZ='EST5EDT,M3.2.0,M11.1.0' date) | tr -d '\n'", returnStdout: true
+                            env.JENKINS_HOME=sh script: "echo \$(dirname \$(dirname \$(pwd))) | tr -d '\n'", returnStdout: true
+                        }              
                       sh '''
+                        echo "yarn run start-mongod
                         echo ${BRANCH_NAME}
                         echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
                         echo $WORKSPACE
@@ -78,7 +74,7 @@ pipeline {
               post {
                 failure{
                   sh'''
-                    echo yarn run mongod-stop
+                    echo yarn run stop-mongod
                     echo "cat logfile in ${JENKINS_HOME}"
                     cat "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
                     echo "done with cat"
