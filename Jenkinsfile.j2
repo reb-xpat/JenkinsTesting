@@ -42,9 +42,6 @@ pipeline {
                 post {
                   failure{
                     setFailureReason("failed prepare build info")
-                    sh'''
-                      echo yarn run mongod-stop
-                    '''
                   }
                 }    
             }
@@ -60,6 +57,13 @@ pipeline {
                     buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
                 }
               }
+              post {
+                failure{
+                  script {
+                    setFailureReason('build app')
+                  }                  
+                }
+              }    
           }
 
           stage('build app') {
