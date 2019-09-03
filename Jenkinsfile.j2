@@ -36,6 +36,7 @@ pipeline {
                     }
                     sh '''
                       echo yarn run mongod-start
+                      exit 1
                     '''
                   }     
                 post {
