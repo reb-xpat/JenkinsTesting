@@ -80,9 +80,6 @@ pipeline {
                   script {
                     setFailureReason('build app')
                   }                  
-                  sh'''
-                    echo "yarn run stop-mongod"
-                  '''
                 }
               }    
           }
@@ -91,6 +88,7 @@ pipeline {
             steps {
                       sh '''
                         echo "yarn run test"
+                        exit 1
                       '''
                 }     
               post {
