@@ -3,15 +3,17 @@ env.dpeClFoTag="Development"
 env.dpeClFoBuildDate="TimeStamp"
 env.DPE_DEPLOY_KEY
 env.JENKINS_HOME
-def errorMsg
-def rawLog="[16:26:24] Starting 'compile'... [16:26:24] Finished 'compile' after 167 ms\n lerna ERR! compile Errored while running script in 'dpe-client-interceptor'\n lerna ERR! execute callback with error\n lerna ERR! Error: Command failed: yarn run compile\n lerna ERR! (!) You have passed an unrecognized option\n lerna ERR! Unknown CLI flag: target. Allowed options: acorn, acornInjectPlugins, amd, assetFileNames, banner, c, cache, chunkFileNames, chunkGroupingSize, compact, config, context, d, dir, dynamicImportFunction, e, entryFileNames, environment, esModule, experimentalCacheExpiry, experimentalOptimizeChunks, experimentalTopLevelAwait, exports, extend, external, f, file, footer, format, freeze, g, globals, h, i, indent, inlineDynamicImports, input, interop, intro, m, manualChunks, moduleContext, n, name, namespaceToStringTag, noConflict, o, onwarn, outro, paths, perf, plugins, preferConst, preserveModules, preserveSymlinks, shimMissingExports, silent, sourcemap, sourcemapExcludeSources, sourcemapFile, strict, treeshake, v, w, watch\n lerna ERR!\n lerna ERR! src/index.js -> dist/ambetter/assets/module, dist/ambetter/assets/system...\n lerna ERR! (!) 'this' has been rewritten to 'undefined'\n lerna ERR! https://rollupjs.org/guide/en#error-this-is-undefined lerna ERR! ../dpe-client-core/lib/hooks/useAdobeAnalytics.js\n lerna ERR! 10: import 'core-js/modules/es6.array.is-array'; lerna ERR! 11:\n lerna ERR! Error 12: var _this = this; lerna ERR!                 ^\n  lerna ERR! 13:\n  lerna ERR! 14: function _slicedToArray(arr, i)"
 def buildDisplayName
 def now = new Date() 
+def setFailureReason(reason)
+{
+      env.FAILURE_STAGE=reason
+}
 
 pipeline {
     agent {
         docker {
-            image 'envolve-innovation-labs/eil-cibuild-nodejs:sre-1.0.9-2019.07.23'
+            image 'image-folder/my-docker-image'
              args '-u root -v $WORKSPACE/node_modules -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
@@ -32,9 +34,13 @@ pipeline {
                     script {
                       buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
                     }
+                    sh '''
+                      echo yarn run mongod-start
+                    '''
                   }     
                 post {
                   failure{
+                    setFailureReason("failed prepare build info")
                     sh'''
                       echo yarn run mongod-stop
                     '''
@@ -54,6 +60,7 @@ pipeline {
                 }
               }
           }
+
           stage('build app') {
             steps {
                         script{
@@ -64,44 +71,47 @@ pipeline {
                             env.JENKINS_HOME=sh script: "echo \$(dirname \$(dirname \$(pwd))) | tr -d '\n'", returnStdout: true
                         }              
                       sh '''
-                        echo "yarn run start-mongod
-                        echo ${BRANCH_NAME}
-                        echo "######## ${JENKINS_HOME}/$JOB_NAME/$BUILD_NUMBER ########"
-                        echo $WORKSPACE
-                        exit 0
+                        echo "yarn run compile"
                       '''
                 }     
               post {
                 failure{
+                  script {
+                    setFailureReason('build app')
+                  }                  
                   sh'''
-                    echo yarn run stop-mongod
-                    echo "cat logfile in ${JENKINS_HOME}"
-                    cat "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log"
-                    echo "done with cat"
+                    echo "yarn run stop-mongod"
                   '''
                 }
               }    
           }
 
+          stage('unit test') {
+            steps {
+                      sh '''
+                        echo "yarn run test"
+                      '''
+                }     
+              post {
+                failure{
+                  script {
+                    setFailureReason('Unit test app')
+                  }                  
+                }
+              }    
+          }
+
+
           stage('Deploy Some Client Foundation') {
               steps{
-                withCredentials([string(credentialsId: 'DPEDeployKey', variable: 'DEPLOYKEY')]) {
+                withCredentials([string(credentialsId: 'MyDeployKey', variable: 'MYDEPLOYKEY')]) {
                     sh '''
                         echo $(dirname ~/)
                         set -x
-                        echo "start deploy dpe-client-foundation"
-                        cp docker/dpe-script-environment/.aws.credentials.enc ~/
-                        dpeBuildTag=$ENV_BUILDNAME
-
-                        echo "'{"buildNumber": "$dpeBuildTag", "tag": "$dpeClFoTag", "buildDate": "$dpeClFoBuildDate" }'"
-                        echo "{ \\\"buildNumber\\\": \\\"$dpeBuildTag\\\", \\\"buildDate\\\": \\\"$dpeClFoBuildDate\\\" }" > some-client-text.json
-                        echo "deploy key: $DEPLOYKEY"
-                        bin/deploy-dpe.sh -p $DEPLOYKEY -j
-                        dpeBuildJson="$(curl -s http://d2zn28muh0qa4g.cloudfront.net/STORYBOOK/build-date.json | jq '.buildNumber' | tr -d '"')"
                        if [ $dpeBuildJson != $ENV_BUILDNAME ];
                         then
                             echo "should have failed"
-                            exit 0
+                            exit 1
                         fi
                             exit 0
                     '''
@@ -110,8 +120,7 @@ pipeline {
               post {
                 failure {
                   script {
-                    env.FAILURE_STAGE = 'Deploy some client'
-                    errorMsg = currentBuild.rawBuild.getLog(30)
+                    setFailureReason('Deploy some client')
                   }
                 }
               }              
@@ -124,9 +133,12 @@ pipeline {
 //                      slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} ")
                   }
                   if(currentBuild.result == 'FAILURE') {
-//                    slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} in Stage $env.FAILURE_STAGE Error: $errorMsg ")
+//                    slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} in Stage $env.FAILURE_STAGE ")
                   }
               }
+              sh'''
+                 echo "yarn run stop-mongod"
+              '''
           }
        }
 }
