@@ -13,12 +13,7 @@ pipeline {
                           echo "mongodb uri $MONGODB_URI"
                         '''
                     }
-                  }     
-                post {
-                  failure{
-                    setFailureReason("failed prepare build info")
-                  }
-                }    
+                  }         
             }
           }
 }
