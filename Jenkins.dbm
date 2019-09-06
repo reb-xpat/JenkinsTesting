@@ -9,7 +9,7 @@ pipeline {
           stage('execute db-migration') {
                 when {
                   anyOf { 
-                    branch "*release*" 
+                    branch "*/release/*" 
                   }
                 }
                   steps {
