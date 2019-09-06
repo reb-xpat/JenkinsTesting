@@ -5,9 +5,6 @@ pipeline {
              args '-u root -v $WORKSPACE/node_modules -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
-    environment {
-       dev = 'true'
-    }
     stages {
           stage('execute db-migration') {
                   when {
@@ -29,8 +26,7 @@ pipeline {
                   }
                 }    
             }
-
-
+          }
     }
     post {
         always {
