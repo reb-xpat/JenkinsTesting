@@ -5,7 +5,7 @@ env.DPE_DEPLOY_KEY
 env.JENKINS_HOME
 def buildDisplayName
 def now = new Date() 
-env.FAILURE_STAGE="SCM Checkout"
+env.FAILURE_STAGE="Declarative: Checkout SCM"
 def setFailureReason(reason)
 {
       env.FAILURE_STAGE=reason
