@@ -8,11 +8,10 @@ pipeline {
     stages {
           stage('execute db-migration') {
                   when {
-                        anyOf {
                 anyOf { 
                     branch "release/*" 
                   }
-                    }
+                }
                   steps {
                     withCredentials([string(credentialsId: $MONGODB_URI_ENV, variable: 'MONGODB_URI')]) {  
                         sh '''
