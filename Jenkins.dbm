@@ -8,7 +8,7 @@ pipeline {
     stages {
           stage('execute db-migration') {
                   steps {
-                    withCredentials([string(credentialsId: $MONGODB_URI_ENV, variable: 'MONGODB_URI')]) {  
+                    withCredentials([string(credentialsId: "$MONGODB_URI_ENV", variable: 'MONGODB_URI')]) {  
                         sh '''
                           echo "mongodb uri ${MONGODB_URI}"
                           echo "Git Branch, ${BRANCH_NAME}"
