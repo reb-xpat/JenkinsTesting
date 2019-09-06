@@ -7,8 +7,8 @@ pipeline {
     }
     stages {
           stage('execute db-migration') {
-                  when {
-                anyOf { 
+                when {
+                  anyOf { 
                     branch "release/*" 
                   }
                 }
@@ -26,19 +26,4 @@ pipeline {
                 }    
             }
           }
-    post {
-        always {
-            script {
-                if(currentBuild.result == 'SUCCESS') {
-                    slackSend(color: '#00FF00', message: "Changed from FAILURE to SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} ")
-                }
-                if(currentBuild.result == 'FAILURE') {
-                slackSend(color: '#FF0000', message: "SUCCESS to FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}:\n${env.BUILD_URL} in Stage $env.FAILURE_STAGE ")
-                }
-            }
-            sh'''
-                echo "yarn run stop-mongod"
-            '''
-        }
-    }
 }
