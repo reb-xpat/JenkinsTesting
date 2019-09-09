@@ -20,8 +20,7 @@ pipeline {
                           echo "git branch2, $env.BRANCH_NAME"
                           echo "git branch3, ${BRANCH_NAME}"
                         '''
-                    }
-                  }         
+                    }         
             }
           }
 }
