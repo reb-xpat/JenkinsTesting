@@ -5,6 +5,9 @@ pipeline {
              args '-u root -v $WORKSPACE/node_modules -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
+    parameters{
+      choice( choices: ['MONGODB_URI_DEV_CHATBOT', 'MONGODB_URI_TEST_CHATBOT', 'MONGODB_URI_PROD_CHATBOT'], description: 'Mongo-db uri", name: 'MONGODB_URI_ENV')
+    }
     stages {
           stage('execute db-migration') {
                   steps {
