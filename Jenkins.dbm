@@ -6,7 +6,7 @@ pipeline {
         }
     }
     parameters{
-      choice( choices: ['MONGODB_URI_DEV_CHATBOT', 'MONGODB_URI_TEST_CHATBOT', 'MONGODB_URI_PROD_CHATBOT'], description: 'Mongo-db uri", name: 'MONGODB_URI_ENV')
+      choice( choices: ['MONGODB_URI_DEV_CHATBOT', 'MONGODB_URI_TEST_CHATBOT', 'MONGODB_URI_PROD_CHATBOT'], description: 'Mongo-db uri', name: 'MONGODB_URI_ENV')
     }
     stages {
           stage('execute db-migration') {
