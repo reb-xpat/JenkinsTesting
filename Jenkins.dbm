@@ -10,7 +10,7 @@ pipeline {
                   steps {
                     withCredentials([string(credentialsId: "$MONGODB_URI_ENV", variable: 'MONGODB_URI')]) {  
                         script {
-                          echo "Git Branch1, $BRANCH_NAME"
+                          echo "Git Branch1, ${BRANCH_NAME}"
                         }
                         sh '''
                           echo "mongodb uri ${MONGODB_URI}"
