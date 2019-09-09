@@ -9,11 +9,14 @@ pipeline {
           stage('execute db-migration') {
                   steps {
                     withCredentials([string(credentialsId: "$MONGODB_URI_ENV", variable: 'MONGODB_URI')]) {  
+                        script {
+                          echo "Git Branch1, $BRANCH_NAME"
+                        }
                         sh '''
                           echo "mongodb uri ${MONGODB_URI}"
                           echo "Git Branch1, $BRANCH_NAME"
-                          echo "git branch2, env.BRANCH_NAME
-                          echo "git branch3, ${BRANCH_NAME}
+                          echo "git branch2, env.BRANCH_NAME"
+                          echo "git branch3, ${BRANCH_NAME}"
                         '''
                     }
                   }         
