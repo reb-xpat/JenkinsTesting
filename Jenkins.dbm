@@ -15,10 +15,7 @@ pipeline {
           stage('execute db-migration') {
                   steps {
                         sh '''
-                          echo "mongodb uri ${MONGODB_URI}"
-                          echo "Git Branch1, $BRANCH_NAME"
-                          echo "git branch2, $env.BRANCH_NAME"
-                          echo "git branch3, ${BRANCH_NAME}"
+                          bin/load-agent-data.sh
                         '''
                     }         
             }
