@@ -18,6 +18,11 @@ pipeline {
                           bin/load-agent-data.sh
                         '''
                     }         
+          }
+          stage{
+            script {
+              fingerprint 'Jenkins.dbm'
             }
           }
+     }
 }
