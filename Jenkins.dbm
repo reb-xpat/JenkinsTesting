@@ -19,7 +19,7 @@ pipeline {
                         '''
                     }         
           }
-          stage{
+          stage (finger print jenkins file){
             script {
               fingerprint 'Jenkins.dbm'
             }
