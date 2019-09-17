@@ -39,8 +39,7 @@ pipeline {
                     sh '''
                       echo yarn run mongod-start
                       author = "$(curl ${BUILD_URL}api/json | jq '.fullName')"
-                      exit 0
-                    '''
+                      '''
                   }     
                 post {
                   failure{
