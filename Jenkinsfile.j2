@@ -6,7 +6,7 @@ env.JENKINS_HOME
 def buildDisplayName
 def now = new Date() 
 env.FAILURE_STAGE="Declarative: Checkout SCM"
-def author = $(curl ${env.BUILD_URL}api/json | jq '.fullName')
+def author
 def setFailureReason(reason)
 {
       env.FAILURE_STAGE=reason
@@ -80,7 +80,7 @@ pipeline {
                         }              
                       sh '''
                         echo "yarn run compile"
-                        exit 1
+                        author = $(curl ${env.BUILD_URL}api/json | jq '.fullName')
                       '''
                 }     
               post {
