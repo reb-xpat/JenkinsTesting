@@ -80,7 +80,7 @@ pipeline {
                         }              
                       sh '''
                         echo "yarn run compile"
-                        author = $(curl -s --insecure  ${BUILD_URL}api/json | jq '.fullName')
+                        author = $(curl -s --insecure ${BUILD_URL}api/json | jq '.fullName')
                       '''
                 }     
               post {
