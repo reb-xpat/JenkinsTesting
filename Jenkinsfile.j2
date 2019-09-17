@@ -79,6 +79,7 @@ pipeline {
                         }              
                       sh '''
                         author=echo $(curl -s --insecure ${BUILD_URL}api/json | jq '.authorEmail')
+                        echo $author
                         echo "yarn run compile"
                       '''  
                 }     
