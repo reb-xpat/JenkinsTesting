@@ -114,6 +114,9 @@ pipeline {
               post {
                 failure {
                   script {
+                    if(${BRANCH_NAME}.startsWith("PR-")){
+                      echo "this is a pr branch and won\'t log to slack"
+                    }
                     setFailureReason('Deploy some client')
                   }
                 }
@@ -124,7 +127,7 @@ pipeline {
           always {
               sh'''
                  echo "yarn run stop-mongod"
-                 echo "author is $author
+                 echo "author is $author"
               '''
           }
        }
