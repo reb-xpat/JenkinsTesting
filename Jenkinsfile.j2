@@ -23,6 +23,13 @@ pipeline {
        dev = 'true'
     }
     stages {
+          stage('Prepare Branch Build Info') {
+              steps {
+                script{       
+                    buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
+                }
+              }   
+          }      
           stage('Prepare Build Info') {
                   when {
                         anyOf {
@@ -47,26 +54,6 @@ pipeline {
                   }
                 }    
             }
-
-          stage('Prepare Branch Build Info') {
-              when { 
-                anyOf { 
-                    branch "release/*" 
-                  }
-              }
-              steps {
-                script{       
-                    buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
-                }
-              }
-              post {
-                failure{
-                  script {
-                    setFailureReason('build app')
-                  }                  
-                }
-              }    
-          }
 
           stage('build app') {
             steps {
