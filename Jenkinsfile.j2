@@ -114,7 +114,7 @@ pipeline {
               post {
                 failure {
                   script {
-                    if(${BRANCH_NAME}.startsWith("PR-")){
+                    if($env.BRANCH_NAME.startsWith("PR-")){
                       echo "this is a pr branch and won\'t log to slack"
                     }
                     setFailureReason('Deploy some client')
