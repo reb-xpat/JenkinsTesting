@@ -7,9 +7,15 @@ def buildDisplayName
 def now = new Date() 
 env.FAILURE_STAGE="Declarative: Checkout SCM"
 def author="me"
-def setFailureReason(reason)
+
+def shouldSendSlack(branchName)
 {
-   if (env.BRANCH_NAME.contains("release") || env.BRANCH_NAME.contains("development") || env.BRANCH_NAME.contains("master")){
+  return branchName.contains("release") || branchName.contains("development") || branchName.contains("master")
+}
+
+def setFailureReason(reason, branchName)
+{
+   if (shouldSendSlack(branchName)){  
       env.FAILURE_STAGE=reason
       echo "Failure stage" + env.FAILURE_STAGE
    }
@@ -29,7 +35,6 @@ pipeline {
           stage('Prepare Branch Build Info') {
               steps {
                 script{  
-                  echo "Branch " + scm.branches[0].name
                   if (env.BRANCH_NAME.contains("release"))  {
                     buildDisplayName = env.BRANCH_NAME+":${BUILD_NUMBER}"
                   } 
@@ -59,7 +64,7 @@ pipeline {
               post {
                 failure{
                   script {
-                    setFailureReason('build app')
+                    setFailureReason('build app', env.BRANCH_NAME)
                   }                  
                 }
               }    
@@ -75,7 +80,7 @@ pipeline {
               post {
                 failure{
                   script {
-                    setFailureReason('Unit test app')
+                    setFailureReason('Unit test app', env.BRANCH_NAME)
                   }                  
                 }
               }    
@@ -103,7 +108,7 @@ pipeline {
                     if($BRANCH_NAME.startsWith("PR-")){
                       echo "this is a pr branch and won\'t log to slack"
                     }
-                    setFailureReason('Deploy some client')
+                    setFailureReason('Deploy some client', env.BRANCH_NAME)
                   }
                 }
               }              
