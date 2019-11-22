@@ -111,7 +111,7 @@ pipeline {
               sh'''
                  echo "yarn run stop-mongod"
                  echo "author is $author"
-                 echo "Failure stage" + $env.FAILURE_STAGE
+                 echo "Failure stage" + $FAILURE_STAGE
               '''
           }
        }
