@@ -11,7 +11,7 @@ def author="me"
 def shouldSendSlack(branchName)
 {
   echo "branchName " + branchName
-  if (branchName.contains("release") || branchName.contains("development") || branchName.contains("PR-")){
+  if (branchName.contains("release") || branchName.contains("development") || branchName.contains("master")){
     return true
   }
   else {
