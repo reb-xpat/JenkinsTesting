@@ -9,7 +9,10 @@ env.FAILURE_STAGE="Declarative: Checkout SCM"
 def author="me"
 def setFailureReason(reason)
 {
+   if (env.BRANCH_NAME.contains("release") || env.BRANCH_NAME.contains("development") || env.BRANCH_NAME.contains("master")){
       env.FAILURE_STAGE=reason
+      echo "Failure stage" + env.FAILURE_STAGE
+   }
 }
 
 pipeline {
@@ -25,35 +28,18 @@ pipeline {
     stages {
           stage('Prepare Branch Build Info') {
               steps {
-                script{       
-                    buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
+                script{  
+                  echo "Branch " + scm.branches[0].name
+                  if (env.BRANCH_NAME.contains("release"))  {
+                    buildDisplayName = env.BRANCH_NAME+":${BUILD_NUMBER}"
+                  } 
+                  else {
+                    buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
+                  }
+                  echo "build display name: " + buildDisplayName
                 }
               }   
           }      
-          stage('Prepare Build Info') {
-                  when {
-                        anyOf {
-                          branch '';
-                          branch 'master';
-                          branch 'development';
-                          branch 'PR-*'
-                        }
-                    }
-                  steps {
-                    script {
-                      buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
-                    }
-                    sh '''
-                      echo yarn run mongod-start
-                      author = "$(curl ${BUILD_URL}api/json | jq '.fullName')"
-                      '''
-                  }     
-                post {
-                  failure{
-                    setFailureReason("failed prepare build info")
-                  }
-                }    
-            }
 
           stage('build app') {
             steps {
@@ -128,6 +114,7 @@ pipeline {
               sh'''
                  echo "yarn run stop-mongod"
                  echo "author is $author"
+                 echo "Failure stage" + $FAILURE_STAGE
               '''
           }
        }
