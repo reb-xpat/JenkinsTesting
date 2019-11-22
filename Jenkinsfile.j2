@@ -10,7 +10,7 @@ def author="me"
 
 def shouldSendSlack(branchName)
 {
-  return branchName.contains("release") || branchName.contains("development") || branchName.contains("master")
+  return branchName.contains("release") || branchName.contains("development") || branchName.contains("PR-")
 }
 
 def setFailureReason(reason, branchName)
