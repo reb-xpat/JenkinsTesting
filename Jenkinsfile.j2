@@ -9,7 +9,10 @@ env.FAILURE_STAGE="Declarative: Checkout SCM"
 def author
 def setFailureReason(reason)
 {
+   if (env.BRANCH_NAME.contains("release") OR env.BRANCH_NAME.contains("development") OR env.BRANCH_NAME.contains("master")){
       env.FAILURE_STAGE=reason
+      echo "Failure stage" + env.FAILURE_STAGE
+   }
 }
 
 pipeline {
