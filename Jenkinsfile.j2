@@ -28,7 +28,7 @@ pipeline {
                 script{  
                   echo "Branch " + scm.branches[0].name
                   if (env.BRANCH_NAME.contains("release"))  {
-                    buildDisplayName = env.BRANCH_NAME="+":${BUILD_NUMBER}"
+                    buildDisplayName = env.BRANCH_NAME+":${BUILD_NUMBER}"
                   } 
                   else {
                     buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
