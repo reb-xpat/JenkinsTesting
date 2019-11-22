@@ -30,35 +30,14 @@ pipeline {
                   if (env.BRANCH_NAME.startsWith("PR-"))  {
                     buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
                     echo "build display name: " + buildDisplayName
-                  }   
+                  } 
+                  else {
+                      buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
+                  }
                     buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
                 }
               }   
           }      
-          stage('Prepare Build Info') {
-                  when {
-                        anyOf {
-                          branch '';
-                          branch 'master';
-                          branch 'development';
-                          branch 'PR-*'
-                        }
-                    }
-                  steps {
-                    script {
-                      buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
-                    }
-                    sh '''
-                      echo yarn run mongod-start
-                      author = "$(curl ${BUILD_URL}api/json | jq '.fullName')"
-                      '''
-                  }     
-                post {
-                  failure{
-                    setFailureReason("failed prepare build info")
-                  }
-                }    
-            }
 
           stage('build app') {
             steps {
