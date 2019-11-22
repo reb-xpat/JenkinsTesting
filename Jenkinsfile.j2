@@ -10,6 +10,7 @@ def author="me"
 
 def shouldSendSlack(branchName)
 {
+  echo "branchName " + branchName
   return (branchName.contains("release") || branchName.contains("development") || branchName.contains("PR-"))
 }
 
