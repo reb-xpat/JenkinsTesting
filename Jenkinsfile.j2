@@ -26,6 +26,7 @@ pipeline {
           stage('Prepare Branch Build Info') {
               steps {
                 script{       
+                    echo env.BRANCH_NAME
                     buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
                 }
               }   
@@ -124,7 +125,7 @@ pipeline {
           always {
               sh'''
                  echo "yarn run stop-mongod"
-                 echo "author is $author
+                 echo "author is $author"
               '''
           }
        }
