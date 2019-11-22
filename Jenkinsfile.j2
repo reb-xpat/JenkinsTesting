@@ -28,7 +28,7 @@ pipeline {
                 script{  
                   if (env.BRANCH_NAME..startsWith("PR-"))  {
                     buildDisplayName = "${now.format("yyyyMMdd", TimeZone.getTimeZone('America/New_York'))}:${BUILD_NUMBER}"
-                    echo "build display name: " = buildDisplayName
+                    echo "build display name: " + buildDisplayName
                   }   
                     echo "Branch " + env.BRANCH_NAME
                     buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
