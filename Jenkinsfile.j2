@@ -26,7 +26,7 @@ pipeline {
           stage('Prepare Branch Build Info') {
               steps {
                 script{       
-                    echo env.BRANCH_NAME
+                    echo "Branch " + env.BRANCH_NAME
                     buildDisplayName = "${BRANCH_NAME}:${BUILD_NUMBER}"
                 }
               }   
