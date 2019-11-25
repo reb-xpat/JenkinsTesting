@@ -105,7 +105,7 @@ pipeline {
                        if [ $dpeBuildJson != $ENV_BUILDNAME ];
                         then
                             echo "should have failed"
-                            exit 1
+                            exit 0
                         fi
                             exit 0
                     '''
