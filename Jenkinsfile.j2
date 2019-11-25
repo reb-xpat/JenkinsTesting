@@ -80,7 +80,10 @@ pipeline {
 
               stage('unit test') {
                 steps {
-                    sh script: "mongod", returnStdout: true
+                     sh '''
+                        mongod &
+
+                     '''
                     }     
                   post {
                     failure{
