@@ -24,7 +24,7 @@ def setFailureReason(reason, branchName)
 pipeline {
     agent {
         docker {
-            image 'artifactory-rco.centene.com/dpe_docker_prod_local_rco/eil-cibuild-nodejs:sre-1.1.0-2019.11.23'
+            image 'eil-cibuild-nodejs:sre-1.1.0-2019.11.23'
              args '-u root -v $WORKSPACE/node_modules'
         }
     }
