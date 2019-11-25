@@ -24,8 +24,8 @@ def setFailureReason(reason, branchName)
 pipeline {
     agent {
         docker {
-            image 'image-folder/my-docker-image'
-             args '-u root -v $WORKSPACE/node_modules -v /var/run/docker.sock:/var/run/docker.sock'
+            image 'artifactory-rco.centene.com/dpe_docker_prod_local_rco/eil-cibuild-nodejs:sre-1.1.0-2019.11.23'
+             args '-u root -v $WORKSPACE/node_modules'
         }
     }
     environment {
@@ -80,10 +80,7 @@ pipeline {
 
               stage('unit test') {
                 steps {
-                          sh '''
-                            echo "yarn run test"
-                            exit 0
-                          '''
+                    sh script: "mongod", returnStdout: true
                     }     
                   post {
                     failure{
@@ -95,8 +92,6 @@ pipeline {
               }
             }
           }
-
-
 
           stage('Deploy Some Client Foundation') {
               steps{
@@ -128,7 +123,7 @@ pipeline {
       post {
           always {
               sh'''
-                 echo "yarn run stop-mongod"
+                 sh script: "mongod --shutdown", returnStdout: true
                  echo "author is $author"
                  echo "Failure stage" + $FAILURE_STAGE
               '''
