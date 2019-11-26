@@ -5,7 +5,13 @@ env.DPE_DEPLOY_KEY
 env.JENKINS_HOME
 def buildDisplayName
 def now = new Date() 
-env.FAILURE_STAGE=""
+env.FAILURE_STAGE="Failed Stage(s)"
+
+def setFailureReason(reason)
+{
+    env.FAILURE_STAGE=env.FAILURE_STAGE + " : " + reason
+}
+
 def author="me"
 
 def shouldSendSlack(branchName)
@@ -32,6 +38,8 @@ pipeline {
        dev = 'true'
     }
     stages {
+       stage('in parallel') {
+         parallel {
           stage('Prepare Build Info') {
               steps {
                 script{  
@@ -43,6 +51,7 @@ pipeline {
                   }
                   echo "build display name: " + buildDisplayName
                 }
+                exit 1
               }
               post {
                 failure{
@@ -66,6 +75,7 @@ pipeline {
                             author=$(curl -s --insecure ${BUILD_URL}api/json | jq '.authorEmail')
                             echo $author
                             echo "yarn run compile"
+                            exit 1
                           '''  
                     }     
                   post {
@@ -92,7 +102,8 @@ pipeline {
                     }
                   }    
               }
-
+            }
+          }
           stage('Deploy Some Client Foundation') {
               when {
                 expression {
