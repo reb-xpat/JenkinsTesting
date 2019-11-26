@@ -96,9 +96,7 @@ pipeline {
           stage('Deploy Some Client Foundation') {
               when {
                 expression {
-                   script {
                       !env.BRANCH_NAME
-                    }
                 }
               }
               steps{
