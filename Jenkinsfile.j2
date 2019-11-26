@@ -62,7 +62,7 @@ pipeline {
                                 env.JENKINS_HOME=sh script: "echo \$(dirname \$(dirname \$(pwd))) | tr -d '\n'", returnStdout: true
                             }              
                           sh '''
-                            author=echo "$(curl -s --insecure ${BUILD_URL}api/json | jq '.authorEmail')"
+                            author=$(curl -s --insecure ${BUILD_URL}api/json | jq '.authorEmail')
                             echo $author
                             echo "yarn run compile"
                           '''  
