@@ -51,7 +51,9 @@ pipeline {
                   }
                   echo "build display name: " + buildDisplayName
                 }
-                exit 1
+                sh '''
+                  exit 1
+                '''
               }
               post {
                 failure{
