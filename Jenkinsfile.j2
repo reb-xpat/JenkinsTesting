@@ -97,6 +97,11 @@ pipeline {
           }
 
           stage('Deploy Some Client Foundation') {
+              when {
+                expression {
+                    !env.BRANCH_NAME
+                }
+              }
               steps{
                 withCredentials([string(credentialsId: 'MyDeployKey', variable: 'MYDEPLOYKEY')]) {
                     sh '''
