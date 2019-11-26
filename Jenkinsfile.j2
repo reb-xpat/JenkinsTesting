@@ -55,6 +55,7 @@ pipeline {
               stage('build app') {
                 steps {
                             script{
+                               echo "branch name -> " + env.BRANCH_NAME
                                 currentBuild.displayName = buildDisplayName
                                 env.ENV_BUILDNAME=buildDisplayName
                                 env.dpeClFoTag=sh script: "echo \$(git describe ) | tr -d '\n'", returnStdout: true
