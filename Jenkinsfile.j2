@@ -97,7 +97,7 @@ pipeline {
               when {
                 expression {
                    script {
-                      env.BRANCH_NAME != null
+                      $BRANCH_NAME == null
                     }
                 }
               }
