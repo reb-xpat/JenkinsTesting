@@ -97,14 +97,11 @@ pipeline {
               when {
                 expression {
                    script {
-                      if(env.BRANCH_NAME != null) {
-                        true
-                      }
+                      !env.BRANCH_NAME != null
                     }
                 }
               }
               steps{
-                withCredentials([string(credentialsId: 'MyDeployKey', variable: 'MYDEPLOYKEY')]) {
                     sh '''
                         echo $(dirname ~/)
                         set -x
@@ -115,7 +112,6 @@ pipeline {
                         fi
                             exit 0
                     '''
-                }  
               }
               post {
                 failure {
