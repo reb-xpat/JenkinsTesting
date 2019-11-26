@@ -52,8 +52,6 @@ pipeline {
                 }
               }    
           }      
-          stage('Test suite') {
-            parallel{
               stage('build app') {
                 steps {
                             script{
@@ -93,8 +91,6 @@ pipeline {
                     }
                   }    
               }
-            }
-          }
 
           stage('Deploy Some Client Foundation') {
               when {
